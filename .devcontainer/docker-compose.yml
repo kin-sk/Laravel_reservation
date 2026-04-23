@@ -6,8 +6,9 @@ services:
       context: ../
       dockerfile: docker/php/Dockerfile
     volumes:
-      - ../src:/workspace/src
-    working_dir: /workspace/src
+      # プロジェクト全体を /workspace にマウント
+      - ..:/workspace:cached
+    working_dir: /workspace
     depends_on:
       - db
 

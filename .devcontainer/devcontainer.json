@@ -2,13 +2,18 @@
   "name": "Laravel Dev",
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
-  "workspaceFolder": "/workspace/src",
+  "workspaceFolder": "/workspace",
   "customizations": {
     "vscode": {
       "extensions": [
+        "ms-ceintl.vscode-language-pack-ja",
         "bmewburn.vscode-intelephense-client",
         "xdebug.php-debug",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "eamodio.gitlens",
+        "mhutchie.git-graph",
+        "ms-azuretools.vscode-docker",
+        "oderwat.indent-rainbow"
       ]
     }
   }
