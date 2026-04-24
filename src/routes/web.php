@@ -7,8 +7,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/reservations', [ReservationController::class, 'index'])
-    ->middleware(['auth']);
+Route::get('/reservations', [ReservationController::class, 'index']);
 
 Route::middleware([
     'auth:sanctum',
