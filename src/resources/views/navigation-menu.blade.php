@@ -72,6 +72,8 @@
                 @endif
 
                 <!-- Settings Dropdown -->
+            @auth
+                <!-- ログインしている時だけ表示する -->
                 <div class="ms-3 relative">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
@@ -115,13 +117,20 @@
                                 @csrf
 
                                 <x-dropdown-link href="{{ route('logout') }}"
-                                         @click.prevent="$root.submit();">
+                                        @click.prevent="$root.submit();">
                                     {{ __('Log Out') }}
                                 </x-dropdown-link>
                             </form>
                         </x-slot>
                     </x-dropdown>
                 </div>
+                @else
+                <!-- ログインしていない時はログインボタンなどを出す -->
+                <div class="flex items-center ms-6">
+                    <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">ログイン</a>
+                    <a href="{{ route('register') }}" class="ms-4 text-sm text-gray-700 underline">会員登録</a>
+                </div>
+            @endauth
             </div>
 
             <!-- Hamburger -->
@@ -145,6 +154,8 @@
         </div>
 
         <!-- Responsive Settings Options -->
+    @auth
+        <!-- ログインしている時だけ表示 -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="flex items-center px-4">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
@@ -176,7 +187,7 @@
                     @csrf
 
                     <x-responsive-nav-link href="{{ route('logout') }}"
-                                   @click.prevent="$root.submit();">
+                                    @click.prevent="$root.submit();">
                         {{ __('Log Out') }}
                     </x-responsive-nav-link>
                 </form>
@@ -215,5 +226,16 @@
                 @endif
             </div>
         </div>
+        @else
+        <!-- ログインしていない時（スマホ用） -->
+        <div class="mt-3 space-y-1">
+            <x-responsive-nav-link href="{{ route('login') }}">
+                {{ __('Login') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('register') }}">
+                {{ __('Register') }}
+            </x-responsive-nav-link>
+        </div>
+    @endauth
     </div>
 </nav>

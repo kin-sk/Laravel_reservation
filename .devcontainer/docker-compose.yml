@@ -8,7 +8,7 @@ services:
     volumes:
       # プロジェクト全体を /workspace にマウント
       - ..:/workspace:cached
-    working_dir: /workspace
+    working_dir: /workspace/src
     depends_on:
       - db
 
@@ -17,7 +17,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ../src:/workspace/src
+      - ..:/workspace:cached
       - ../docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - app
@@ -31,6 +31,7 @@ services:
       POSTGRES_PASSWORD: secret
     ports:
       - "5432:5432"
+      - "5173:5173"
     volumes:
       - db-data:/var/lib/postgresql/data
 

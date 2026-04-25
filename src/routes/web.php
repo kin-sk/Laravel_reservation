@@ -7,11 +7,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/reservations', [ReservationController::class, 'index']);
+// カレンダー表示画面
+Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+
+// 特定の日付の時間枠表示画面
+Route::get('/reservations/{date}', [ReservationController::class, 'show'])->name('reservations.show');
 
 Route::middleware([
     'auth:sanctum',
-    config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
