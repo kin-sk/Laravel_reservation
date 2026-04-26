@@ -17,7 +17,8 @@ Route::middleware([
     'auth:sanctum',
     'verified',
 ])->group(function () {
+    // もともとの dashboard の記述を消して、以下のようにリダイレクトさせる
     Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+        return redirect()->route('reservations.index');
+    });
 });

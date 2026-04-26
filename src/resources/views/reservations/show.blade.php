@@ -33,7 +33,7 @@
                                 {{-- ログイン状態によってボタンの挙動を変える --}}
                                 @auth
                                     <button class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full text-sm font-bold shadow-lg shadow-blue-200 transition-transform active:scale-95">
-                                        予約を確定する
+                                        予約
                                     </button>
                                 @else
                                     <a href="{{ route('login') }}" class="bg-gray-800 hover:bg-black text-white px-8 py-3 rounded-full text-sm font-bold shadow-lg transition-transform active:scale-95">
