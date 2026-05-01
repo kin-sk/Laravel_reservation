@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reservation;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\TimeSlot;
 use Carbon\Carbon; // Carbonを忘れずに追加
@@ -16,6 +18,10 @@ class ReservationController extends Controller
     {
         // カレンダーを表示する月を決定
         $viewDate = Carbon::parse($request->query('date', Carbon::today()));
+
+        // 【追加】前月と次月の初日の日付を計算
+        $prevMonth = $viewDate->copy()->subMonth()->startOfMonth()->format('Y-m-d');
+        $nextMonth = $viewDate->copy()->addMonth()->startOfMonth()->format('Y-m-d');
         
         // カレンダーの日付リストを生成
         $startOfMonth = $viewDate->copy()->startOfMonth();
@@ -46,7 +52,7 @@ class ReservationController extends Controller
             $current->addDay();
         }
 
-        return view('reservations.index', compact('dates', 'viewDate'));
+        return view('reservations.index', compact('dates', 'viewDate', 'prevMonth', 'nextMonth'));
     }
 
     public function show($date)
@@ -55,8 +61,46 @@ class ReservationController extends Controller
         $selectedDate = Carbon::parse($date);
         $timeSlots = TimeSlot::whereDate('start_time', $date)
                             ->orderBy('start_time')
+                            ->withCount('reservations')
                             ->get();
 
         return view('reservations.show', compact('timeSlots', 'selectedDate'));
+    }
+
+    public function confirm(Request $request)
+    {
+        $request->validate([
+            'time_slot_id' => 'required|exists:time_slots,id',
+        ]);
+
+        $slot = TimeSlot::findOrFail($request->time_slot_id);
+
+        return view('reservations.confirm', compact('slot'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'time_slot_id' => 'required|exists:time_slots,id',
+        ]);
+
+        $exists = Reservation::where('time_slot_id', $request->time_slot_id)->exists();
+
+        if ($exists) {
+            return back()->with('error', 'この時間はすでに予約されています');
+        }
+
+        Reservation::create([
+            'user_id' => Auth::id(),
+            'time_slot_id' => $request->time_slot_id,
+            'status' => 'reserved',
+        ]);
+
+        return redirect()->route('reservations.success');
+    }
+
+    public function success()
+    {
+        return view('reservations.success');
     }
 }

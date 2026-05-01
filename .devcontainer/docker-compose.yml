@@ -8,6 +8,9 @@ services:
     volumes:
       # プロジェクト全体を /workspace にマウント
       - ..:/workspace:cached
+      - vendor-volumes:/workspace/src/vendor
+      - storage-volume:/workspace/src/storage
+
     working_dir: /workspace/src
     depends_on:
       - db
@@ -31,9 +34,10 @@ services:
       POSTGRES_PASSWORD: secret
     ports:
       - "5432:5432"
-      - "5173:5173"
     volumes:
       - db-data:/var/lib/postgresql/data
 
 volumes:
   db-data:
+  vendor-volumes:
+  storage-volume:

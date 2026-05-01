@@ -10,8 +10,30 @@ Route::get('/', function () {
 // カレンダー表示画面
 Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
 
+// 予約確認画面
+Route::post('/reservations/confirm', [ReservationController::class, 'confirm'])
+    ->middleware('auth')
+    ->name('reservations.confirm');
+
+// 予約完了画面
+Route::post('/reservations/store', [ReservationController::class, 'store'])
+    ->middleware('auth')
+    ->name('reservations.store');
+
+// 予約成功画面（GET）
+Route::get('/reservations/success', [ReservationController::class, 'success'])
+    ->name('reservations.success');
+
 // 特定の日付の時間枠表示画面
-Route::get('/reservations/{date}', [ReservationController::class, 'show'])->name('reservations.show');
+Route::get('/reservations/{date}', [ReservationController::class, 'show'])
+    ->where('date', '\d{4}-\d{2}-\d{2}')
+    ->name('reservations.show');
+
+// 予約取得処理
+Route::post('/reservations', [ReservationController::class, 'store'])
+    ->middleware('auth')
+    ->name('reservations.store');
+
 
 Route::middleware([
     'auth:sanctum',

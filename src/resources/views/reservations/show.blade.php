@@ -29,17 +29,25 @@
                                 <span class="text-2xl font-bold text-gray-700">
                                     {{ $slot->start_time->format('H:i') }}
                                 </span>
-                                
-                                {{-- ログイン状態によってボタンの挙動を変える --}}
-                                @auth
-                                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-full text-sm font-bold shadow-lg shadow-blue-200 transition-transform active:scale-95">
-                                        予約
-                                    </button>
+                                @if ($slot->reservations_count > 0)
+                                {{-- 予約済 --}}
+                                <span class="text-gray-400">予約済</span>
                                 @else
-                                    <a href="{{ route('login') }}" class="bg-gray-800 hover:bg-black text-white px-8 py-3 rounded-full text-sm font-bold shadow-lg transition-transform active:scale-95">
-                                        ログインして予約
-                                    </a>
-                                @endauth
+                                    {{-- ログイン状態によってボタンの挙動を変える --}}
+                                    @auth
+                                        <form method="POST" action="{{ route('reservations.confirm') }}">
+                                            @csrf
+                                            <input type="hidden" name="time_slot_id" value="{{ $slot->id }}">
+                                            <button class="bg-blue-600 text-white px-8 py-3 rounded-full">
+                                                予約
+                                            </button>
+                                        </form>
+                                    @else
+                                        <a href="{{ route('login') }}" class="bg-gray-800 hover:bg-black text-white px-8 py-3 rounded-full text-sm font-bold shadow-lg transition-transform active:scale-95">
+                                            ログインして予約
+                                        </a>
+                                    @endauth
+                                @endif
                             </div>
                         @endforeach
                     </div>
