@@ -16,7 +16,7 @@ Route::post('/reservations/confirm', [ReservationController::class, 'confirm'])
     ->name('reservations.confirm');
 
 // 予約完了画面
-Route::post('/reservations/store', [ReservationController::class, 'store'])
+Route::post('/reservations', [ReservationController::class, 'store'])
     ->middleware('auth')
     ->name('reservations.store');
 
@@ -29,10 +29,10 @@ Route::get('/reservations/{date}', [ReservationController::class, 'show'])
     ->where('date', '\d{4}-\d{2}-\d{2}')
     ->name('reservations.show');
 
-// 予約取得処理
-Route::post('/reservations', [ReservationController::class, 'store'])
+// ログイン済みのユーザーの予約確認画面
+Route::get('/mypage', [ReservationController::class, 'mypage'])
     ->middleware('auth')
-    ->name('reservations.store');
+    ->name('mypage');
 
 
 Route::middleware([

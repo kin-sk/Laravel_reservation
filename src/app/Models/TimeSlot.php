@@ -8,7 +8,7 @@ class TimeSlot extends Model
 {
     protected $fillable = ['start_time', 'end_time'];
 
-    // これが重要！文字列を自動で日付クラスに変換します
+    // 文字列を自動で日付クラスに変換します
     protected $casts = [
         'start_time' => 'datetime',
         'end_time' => 'datetime',

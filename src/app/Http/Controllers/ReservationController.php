@@ -85,6 +85,12 @@ class ReservationController extends Controller
             'time_slot_id' => 'required|exists:time_slots,id',
         ]);
 
+        //  過去チェック
+        $slot = TimeSlot::findOrFail($request->time_slot_id);
+        if ($slot->start_time->isPast()) {
+            return back()->with('error', 'この時間は予約できません');
+        }
+
         // 二重予約チェック
         $exists = Reservation::where('time_slot_id', $request->time_slot_id)->exists();
 
@@ -101,6 +107,25 @@ class ReservationController extends Controller
 
         // 完了画面へ
         return redirect()->route('reservations.success');
+    }
+
+    // 完了画面へ遷移させる
+    public function success()
+    {
+        return view('reservations.success');
+    }
+
+    public function mypage()
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        $reservations = $user->reservations()
+            ->with('timeSlot')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('reservations.mypage', compact('reservations'));
     }
 
 }

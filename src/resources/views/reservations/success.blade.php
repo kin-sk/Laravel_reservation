@@ -9,7 +9,7 @@
         </p>
 
         <a href="{{ route('reservations.index') }}"
-          class="bg-blue-600 text-white px-6 py-3 rounded-full">
+        class="bg-blue-600 text-white px-6 py-3 rounded-full">
             カレンダーへ戻る
         </a>
     </div>

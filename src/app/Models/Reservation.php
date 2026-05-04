@@ -10,5 +10,10 @@ class Reservation extends Model
         'user_id',
         'time_slot_id',
         'status',
-];
+    ];
+
+    public function timeSlot()
+    {
+        return $this->belongsTo(\App\Models\TimeSlot::class);
+    }
 }

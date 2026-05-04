@@ -29,9 +29,12 @@
                                 <span class="text-2xl font-bold text-gray-700">
                                     {{ $slot->start_time->format('H:i') }}
                                 </span>
-                                @if ($slot->reservations_count > 0)
+                                @if($slot->start_time->isPast())
+                                {{-- 現在の日時より前の時間はクリック不可 --}}
+                                    <span class="text-gray-400">受付終了</span>
+                                @elseif ($slot->reservations_count > 0)
                                 {{-- 予約済 --}}
-                                <span class="text-gray-400">予約済</span>
+                                <span class="text-red-400">予約済</span>
                                 @else
                                     {{-- ログイン状態によってボタンの挙動を変える --}}
                                     @auth
