@@ -80,27 +80,27 @@ class ReservationController extends Controller
 
     public function store(Request $request)
     {
+        // バリデーション
         $request->validate([
             'time_slot_id' => 'required|exists:time_slots,id',
         ]);
 
+        // 二重予約チェック
         $exists = Reservation::where('time_slot_id', $request->time_slot_id)->exists();
 
         if ($exists) {
             return back()->with('error', 'この時間はすでに予約されています');
         }
 
+        // 保存
         Reservation::create([
             'user_id' => Auth::id(),
             'time_slot_id' => $request->time_slot_id,
             'status' => 'reserved',
         ]);
 
+        // 完了画面へ
         return redirect()->route('reservations.success');
     }
 
-    public function success()
-    {
-        return view('reservations.success');
-    }
 }
