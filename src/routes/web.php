@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\AdminReservationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -43,4 +44,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return redirect()->route('reservations.index');
     });
+});
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/reservations', [AdminReservationController::class, 'index'])
+        ->name('admin.reservations.index');
 });

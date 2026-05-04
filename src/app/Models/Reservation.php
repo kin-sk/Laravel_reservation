@@ -16,4 +16,9 @@ class Reservation extends Model
     {
         return $this->belongsTo(\App\Models\TimeSlot::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
