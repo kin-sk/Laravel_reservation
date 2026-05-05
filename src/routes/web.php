@@ -9,7 +9,8 @@ Route::get('/', function () {
 });
 
 // カレンダー表示画面
-Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
+Route::get('/reservations', [ReservationController::class, 'index'])
+    ->name('reservations.index');
 
 // 予約確認画面
 Route::post('/reservations/confirm', [ReservationController::class, 'confirm'])
@@ -35,6 +36,9 @@ Route::get('/mypage', [ReservationController::class, 'mypage'])
     ->middleware('auth')
     ->name('mypage');
 
+// 管理者用キャンセルボタン
+Route::patch('/admin/reservations/{id}/cancel',[AdminReservationController::class, 'cancel'])
+    ->name('admin.reservations.cancel');
 
 Route::middleware([
     'auth:sanctum',

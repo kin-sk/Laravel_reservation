@@ -16,4 +16,18 @@ class AdminReservationController extends Controller
 
         return view('admin.reservations.index', compact('reservations'));
     }
+
+    // 管理者用キャンセルボタン
+    public function cancel($id)
+    {
+        $reservation = Reservation::findOrFail($id);
+
+        $reservation->status = 'cancelled';
+        $reservation->save();
+
+        return redirect()
+            ->route('admin.reservations.index')
+            ->with('success', '予約をキャンセルしました');
+    }
+
 }

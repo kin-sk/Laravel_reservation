@@ -108,6 +108,13 @@
                                 マイページ
                             </x-dropdown-link>
 
+                            <!-- 管理者ユーザーのみ表示  -->
+                            @if(auth()->user()->isAdmin())
+                                <x-dropdown-link href="/admin/reservations">
+                                    管理画面
+                                </x-dropdown-link>
+                            @endif
+
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">
                                     {{ __('API Tokens') }}
