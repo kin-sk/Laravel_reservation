@@ -23,13 +23,20 @@ COPY ./src /var/www
 RUN composer install --no-dev --optimize-autoloader
 RUN npm install && npm run build
 
+RUN rm -rf bootstrap/cache/*.php
+
+# キャッシュクリア
+RUN php artisan config:clear
+RUN php artisan cache:clear
+RUN php artisan config:cache
+
 # 権限設定
 RUN mkdir -p storage/framework/cache \
     storage/framework/sessions \
     storage/framework/views \
     bootstrap/cache \
- && chown -R www-data:www-data storage bootstrap/cache \
- && chmod -R 775 storage bootstrap/cache
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
 # PHP-FPMポート修正
 RUN sed -i 's|listen = .*|listen = 9000|' /usr/local/etc/php-fpm.d/www.conf
